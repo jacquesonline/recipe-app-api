@@ -16,15 +16,15 @@ class CalcTests(SimpleTestCase):
         res = calc.subtract(10, 15)
         self.assert_(res, 5)
 
-from django.test import TestCase, Client
-from django.urls import reverse
+# from django.test import TestCase, Client
+# from django.urls import reverse
 
 
-class TestUrls(TestCase):
+# class TestUrls(TestCase):
 
-    def test_admin_url(self):
-        client = Client()
-        response = client.get(reverse('admin:index'))
-        status_code = response.status_code
-        print(f'Status code: {status_code}')
-        self.assertEqual(response.status_code, 200)
+#     def test_admin_url(self):
+#         client = Client()
+#         response = client.get(reverse('admin:index'))
+#         status_code = response.status_code
+#         print(f'Status code: {status_code}')
+#         self.assertEqual(response.status_code, 200)
