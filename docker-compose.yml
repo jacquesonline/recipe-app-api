@@ -17,6 +17,8 @@ services:
       - DB_NAME=dev_db
       - DB_USER=hero
       - DB_PASS=hero
+    depends_on:
+      - db
 
   db:
     image: postgres:13-alpine

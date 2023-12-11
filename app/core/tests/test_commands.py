@@ -20,8 +20,7 @@ class CommandTests(SimpleTestCase):
         '''
         Test waiting for db when db is available
         '''
-        with patch('django.db.utils.ConnectionHandler.__getitem__') as gi:
-            patched_checked.return_value = True
-            call_command('wait_for_db')
-            patched_checked.assert_called_once_with(database=['default'])
+        patched_checked.return_value = True
+        call_command('wait_for_db')
+        patched_checked.assert_called_once_with(database=['default'])
     
