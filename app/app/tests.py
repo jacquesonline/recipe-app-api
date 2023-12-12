@@ -5,6 +5,8 @@ from django.test import SimpleTestCase
 from app import calc
 
 # test calculate module
+
+
 class CalcTests(SimpleTestCase):
     ''' Test that two numbers are added together '''
 
