@@ -7,3 +7,4 @@ docker-compose up
 docker login
 docker-compose down
 docker-compose run --rm app sh -c "python manage.py wait_for_db"
+docker-compose run --rm app sh -c "python manage.py wait_for_db && python manage.py migrate"
