@@ -18,7 +18,7 @@ from recipe.serializers import (
     RecipeDetailSerializer,
 )
 
-RECIPE_URL = reverse('recipe:recipe-list')
+RECIPES_URL = reverse('recipe:recipe-list')
 
 
 def detail_url(recipe_id):
@@ -48,12 +48,12 @@ class PublicRecipeAPITests(TestCase):
 
     def test_auth_required(self):
         """Test auth is required to call API"""
-        res = self.client.get(RECIPE_URL)
+        res = self.client.get(RECIPES_URL)
 
         self.assertEqual(res.status_code, status.HTTP_401_UNAUTHORIZED)
 
 class PrivateRecipeAPITests(TestCase):
-    """Test unathenticated recipe API requests"""
+    """Test authenticated recipe API requests"""
 
     def setUp(self):
         self.client = APIClient()
@@ -68,7 +68,7 @@ class PrivateRecipeAPITests(TestCase):
         create_recipe(user=self.user)
         create_recipe(user=self.user)
 
-        res = self.client.get(RECIPE_URL)
+        res = self.client.get(RECIPES_URL)
 
         recipes = Recipe.objects.all().order_by('-id')
         serializer =  RecipeSerializer(recipes, many=True)
@@ -85,10 +85,10 @@ class PrivateRecipeAPITests(TestCase):
         create_recipe(user=other_user)
         create_recipe(user=self.user)
 
-        res = self.client.get(RECIPE_URL)
+        res = self.client.get(RECIPES_URL)
 
-        recipe = Recipe.objects.filter(user=self.user)
-        serializer = RecipeSerializer(recipe, many=True)
+        recipes = Recipe.objects.filter(user=self.user)
+        serializer = RecipeSerializer(recipes, many=True)
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         self.assertEqual(res.data, serializer.data)
 
@@ -103,13 +103,13 @@ class PrivateRecipeAPITests(TestCase):
         self.assertEqual(res.data, serializer.data)
 
     def test_create_recipe(self):
-        """Test creatnig a recipe."""
+        """Test creating a recipe."""
         payload = {
             'title': 'Sample recipe',
             'time_minutes': 30,
             'price': Decimal('5.99'),
         }
-        res = self.client.post(RECIPE_URL, payload)
+        res = self.client.post(RECIPES_URL, payload)
 
 
         self.assertEqual(res.status_code, status.HTTP_201_CREATED)
