@@ -120,14 +120,14 @@ class PrivateUserApiTests(TestCase):
 
     def setUp(self):
         self.user = create_user(
-                    email='test@example.com',
-                    password='testpass123',
-                    name='Test Name',
+            email='test@example.com',
+            password='testpass123',
+            name='Test Name',
                 )
         self.client = APIClient()
         self.client.force_authenticate(user=self.user)
 
-    def test_retireve_profile_success(self):
+    def test_retrieve_profile_success(self):
         """Test retrieving profile for the logged on user."""
         res = self.client.get(ME_URL)
 
@@ -138,19 +138,19 @@ class PrivateUserApiTests(TestCase):
         })
 
 
-    def test_retrieve_user_unauthorised(self):
-            """Test authentication is required for users"""
-            res = self.client.post(ME_URL, {})
+    def test_post_me_not_allowed(self):
+        """Test authentication is required for users"""
+        res = self.client.post(ME_URL, {})
 
-            self.assertEqual(res.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
+        self.assertEqual(res.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
 
     def test_update_user_profile(self):
-            """Test updating the user profile for the authenticated user"""
-            payload = {'name': 'Upadate name', 'password': 'newpassword123'}
+        """Test updating the user profile for the authenticated user"""
+        payload = {'name': 'Updated name', 'password': 'newpassword123'}
 
-            res = self.client.patch(ME_URL, payload)
+        res = self.client.patch(ME_URL, payload)
 
-            self.user.refresh_from_db()
-            self.assertEqual(res.user.name, payload['name'])
-            self.assertTrue(res.user.check_password, payload['password'])
-            self.assertEqual(res.status_code, status.HTTP_200_OK)
+        self.user.refresh_from_db()
+        self.assertEqual(self.user.name, payload['name'])
+        self.assertTrue(self.user.check_password(payload['password']))
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
