@@ -1,4 +1,4 @@
 {
     "editor.formatOnSave": true,
-    "cloudcode.duetAI.inlineSuggestions.enableAuto": false
+    "cloudcode.duetAI.inlineSuggestions.enableAuto": true
 }
