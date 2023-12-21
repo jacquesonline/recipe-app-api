@@ -316,7 +316,7 @@ class PrivateRecipeApiTests(TestCase):
             ).exists()
             self.assertTrue(exists)
 
-    def test_create_recipe_with_existing_ingredients(self):
+    def test_create_recipe_with_existing_ingredient(self):
         """Test creating a recipie with existing ingedients"""
         ingredient = Ingredient.objects.create(user=self.user, name='Lemon')
         payload = {
