@@ -237,7 +237,7 @@ class PrivateRecipeApiTests(TestCase):
             }],
         }
         res = self.client.post(RECIPES_URL, payload, format='json')
-        self.assertTrue(res.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(res.status_code, status.HTTP_201_CREATED)
         recipes = Recipe.objects.filter(user=self.user)
         self.assertEqual(recipes.count(), 1)
         recipe = recipes[0]
@@ -304,7 +304,7 @@ class PrivateRecipeApiTests(TestCase):
         }
         res = self.client.post(RECIPES_URL, payload, format='json')
 
-        self.assertTrue(res.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(res.status_code, status.HTTP_201_CREATED)
         recipes = Recipe.objects.filter(user=self.user)
         self.assertEqual(recipes.count(), 1)
         recipe = recipes[0]
@@ -356,7 +356,7 @@ class PrivateRecipeApiTests(TestCase):
         new_ingredient = Ingredient.objects.get(user=self.user, name='Limes')
         self.assertIn(new_ingredient, recipe.ingredients.all())
 
-    def test_update_recipe_assign_ingredients(self):
+    def test_update_recipe_assign_ingredient(self):
         """Test assigning and an existing ingredient when updating a recipe"""
         ingredient1 = Ingredient.objects.create(user=self.user, name='Pepper')
         recipe = create_recipe(user=self.user)
@@ -369,7 +369,7 @@ class PrivateRecipeApiTests(TestCase):
 
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         self.assertIn(ingredient2, recipe.ingredients.all())
-        self.assertNotin(ingredient1, recipe.ingredients.all())
+        self.assertNotIn(ingredient1, recipe.ingredients.all())
 
     def test_clear_recipe_ingredients(self):
         """Test clearing a recipe of all its ingredients"""
