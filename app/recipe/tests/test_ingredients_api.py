@@ -16,9 +16,9 @@ from recipe.serializers import IngredientSerializer
 INGREDIENTS_URL = reverse('recipe:ingredient-list')
 
 
-def detail_url(tag_id):
-    """Create and return a ingredients detail url."""
-    return reverse('recipe:ingredients-detail', args=[ingredient_id])
+def detail_url(ingredient_id):
+    """Create and return a ingredient detail url."""
+    return reverse('recipe:ingredient-detail', args=[ingredient_id])
 
 
 def create_user(email='user@example.com', password='testpass123'):
@@ -85,14 +85,14 @@ class PrivateIngredientsApiTests(TestCase):
         ingredient.refresh_from_db()
         self.assertEqual(ingredient.name, payload['name'])
 
-    # def test_delete_ingredients(self):
-    #     """Test deleting an ingredient"""
-    #     ingredients = ingredients.objects.create(
-    #         user=self.user, name='Chives')
+    def test_delete_ingredients(self):
+        """Test deleting an ingredient"""
+        ingredient = Ingredient.objects.create(
+            user=self.user, name='Chives')
 
-    #     url = detail_url(ingredients.id)
-    #     res = self.client.delete(url)
+        url = detail_url(ingredient.id)
+        res = self.client.delete(url)
 
-    #     self.assertEqual(res.status_code, status.HTTP_204_NO_CONTENT)
-    #     ingredients = ingredients.objects.filter(user=self.user)
-    #     self.assertFalse(ingredients.exists())
+        self.assertEqual(res.status_code, status.HTTP_204_NO_CONTENT)
+        ingredients = Ingredient.objects.filter(user=self.user)
+        self.assertFalse(ingredients.exists())
