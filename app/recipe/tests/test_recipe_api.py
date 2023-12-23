@@ -35,8 +35,8 @@ def detail_url(recipe_id):
 
 
 def image_upload_url(recipe_id):
-    """Create and retuurn an image upload URL."""
-    return reverse('recipe:recipe-upload-image', arg=[recipe_id])
+    """Create and return an image upload URL."""
+    return reverse('recipe:recipe-upload-image', args=[recipe_id])
 
 
 def create_recipe(user, **params):
@@ -398,7 +398,7 @@ class ImageUploadTests(TestCase):
     """Tests for the image upload API."""
 
     def setUp(self):
-        self.client = APIClient
+        self.client = APIClient()
         self.user = get_user_model().objects.create_user(
             'user@example.com', 'password123')
         self.client.force_authenticate(self.user)
@@ -421,12 +421,12 @@ class ImageUploadTests(TestCase):
         self.recipe.refresh_from_db()
         self.assertEqual(res.ststus_code, status.HTTP_200_OK)
         self.assertIn('image', res.data)
-        self.assertTure(os.path.exists(self.recipe.image.path))
+        self.assertTrue(os.path.exists(self.recipe.image.path))
 
     def test_upload_image_bad_image(self):
         """Test upload an invalid image."""
         url = image_upload_url(self.recipe.id)
-        payload = {'image': 'not an image'}
+        payload = {'image': 'notanimage'}
         res = self.client.post(url, payload, format='multipart')
 
         self.assertEqual(res.ststus_code, status.HTTP_400_BAD_REQUEST)
